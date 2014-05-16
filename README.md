@@ -1,6 +1,8 @@
-# Hasho
+# Hash-o
 
-TODO: Write a gem description
+Hash-o (pronounced Hash-Oh!) is a Ruby gem that provides a simple way for creating the `#to_h` methods in objects.
+The `#to_h` is a standard interface added in Ruby 2.0 and it should return a hash representation of an object.
+
 
 ## Installation
 
@@ -18,7 +20,62 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Let's use a simple example to ilustrate the usage of hash-o:
+
+```
+class User
+  include Hasho
+
+  def name
+    "John Smith"
+  end
+
+  def email
+    "john@example.com"
+  end
+end
+
+user = User.new
+user.to_h
+
+# => { name: "John Smith", email: "john@example.com" }
+```
+
+Hash-o works out of the box because, if no options are specified, it will reflect on the object's public interface and generate the hash based on it.
+
+If for any reason you don't want to include all the object's public interface, you can specify which attributes will be included in the hash:
+
+```
+class User
+  include Hasho
+  
+  hash_methods :name, :email
+
+  def name
+    "John Smith"
+  end
+
+  def email
+    "john@example.com"
+  end
+  
+  def password
+    "superSecretOMG!"
+  end
+end
+
+user = User.new
+user.to_h
+
+# => { name: "John Smith", email: "john@example.com" }
+```
+This is pretty much it, simple but effective.
+
+## Todo
+
+- [ ] Add an `:except` option to method call so user can tell which attributes **shouldn't** be added.
+- [ ] Accept attributes (other than those already on the method interface) and add them as keys/values to the hash.
+- [ ] Accept an attribute with an associated `Proc` and use result as the value on the hash.
 
 ## Contributing
 
